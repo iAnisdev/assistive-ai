@@ -1,5 +1,3 @@
-version: '3.9'
-
 services:
   backend:
     build:
@@ -10,6 +8,21 @@ services:
       - "8000:8000"
     volumes:
       - ./backend:/app
+    networks:
+      - assistive_ai_net
+
+  app:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.app
+    container_name: assistive_app
+    ports:
+      - "19000:19000"  # Metro bundler
+      - "19001:19001"  # DevTools
+      - "19002:19002"  # Tunnel
+      - "8081:8081"    # Web
+    volumes:
+      - ./app:/app
     networks:
       - assistive_ai_net
 
