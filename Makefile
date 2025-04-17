@@ -46,7 +46,6 @@ clean:
 	@echo "🧹 Cleaning all containers, volumes, networks, and build cache..."
 	docker-compose down -v --rmi all --remove-orphans
 	docker volume rm $(PROJECT_NAME)_data || true
-	docker network rm $(PROJECT_NAME)_net || true
 
 # ===== PLATFORM-SPECIFIC TOOLS =====
 
