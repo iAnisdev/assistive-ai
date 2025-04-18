@@ -9,6 +9,7 @@ import GalleryPicker from './components/GalleryPicker';
 export default function App() {
   const [image, setImage] = useState(null);
   const [uploading, setUploading] = useState(false);
+  const [confidence, setConfidence] = useState(0);
   
   const speakResult = async (text) => {
     try {
@@ -25,6 +26,7 @@ export default function App() {
   const handleImageSelected = (selectedImage) => {
     setImage(selectedImage);
     if (selectedImage) {
+      setConfidence(0);
       uploadImage(selectedImage);
     }
   };
@@ -53,7 +55,9 @@ export default function App() {
       });
   
       const result = await response.json();
-      const predictionText = result.label || 'No object detected';
+      
+      const predictionText = result.message || 'No object detected';
+      setConfidence(result.confidence);
       speakResult(`${predictionText}`);
     } catch (err) {
       const errorMessage = 'An error occurred while analyzing the image';
@@ -94,6 +98,15 @@ export default function App() {
           >
             <MaterialIcons name="close" size={24} color="white" />
           </TouchableOpacity>
+        </View>
+      )}
+
+      {confidence > 0 && (
+        <View style={styles.confidenceContainer}>
+          <Text style={styles.confidenceText}>Confidence: {Math.round(confidence)}%</Text>
+          <View style={styles.confidenceBar}>
+            <View style={[styles.confidenceProgress, { width: `${confidence}%` }]} />
+          </View>
         </View>
       )}
 
@@ -189,5 +202,27 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: '600',
     color: '#333',
+  },
+  confidenceContainer: {
+    width: '100%',
+    marginBottom: 20,
+    paddingHorizontal: 20,
+  },
+  confidenceText: {
+    fontSize: 16,
+    color: '#333',
+    marginBottom: 8,
+    textAlign: 'center',
+  },
+  confidenceBar: {
+    height: 10,
+    backgroundColor: '#E0E0E0',
+    borderRadius: 5,
+    overflow: 'hidden',
+  },
+  confidenceProgress: {
+    height: '100%',
+    backgroundColor: '#007AFF',
+    borderRadius: 5,
   },
 }); 
