@@ -6,21 +6,6 @@ PROJECT_NAME=assistive_ai
 setup:
 	@echo "🔧 Setting up project..."
 
-	# Check for Xcode installation
-	@if ! [ -d "/Applications/Xcode.app" ]; then \
-		echo "❌ Xcode is not installed. Please install it from the App Store."; \
-		exit 1; \
-	fi
-
-	# Check if Xcode is set as active developer directory
-	@if [ "$$(xcode-select -p)" != "/Applications/Xcode.app/Contents/Developer" ]; then \
-		echo "⚠️ Xcode CLI tools are set incorrectly."; \
-		echo "🔁 Fixing with: sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer"; \
-		sudo xcode-select --switch /Applications/Xcode.app/Contents/Developer; \
-	fi
-
-	# Accept Xcode license (if not accepted)
-	@sudo xcodebuild -license accept > /dev/null 2>&1 || true
 
 	# Create Docker volume
 	docker volume create $(PROJECT_NAME)_data
@@ -43,9 +28,16 @@ restart:
 	make up
 
 clean:
+	make stop
+	make kill
 	@echo "🧹 Cleaning all containers, volumes, networks, and build cache..."
 	docker-compose down -v --rmi all --remove-orphans
 	docker volume rm $(PROJECT_NAME)_data || true
+
+go:
+	@echo "🚀 Starting all services..."
+	make setup
+	make up
 
 # ===== PLATFORM-SPECIFIC TOOLS =====
 
