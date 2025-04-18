@@ -3,3 +3,11 @@ uvicorn[standard]
 python-dotenv
 pillow
 python-multipart
+aiofiles
+torch
+torchvision
+open_clip_torch
+transformers
+sentencepiece
+huggingface-hub
+spacy
