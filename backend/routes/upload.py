@@ -6,10 +6,12 @@ import io
 from models.clip_model import CLIPModel
 from models.caption_model import CaptionModel
 from utils.nlp import extract_labels
+from models.train_models import train_models
 
 
 router = APIRouter()
 
+svm_model, knn_model = train_models()
 clip = CLIPModel()
 captioner = CaptionModel()
 

@@ -6,8 +6,9 @@ python-multipart
 aiofiles
 torch
 torchvision
-open_clip_torch
 transformers
 sentencepiece
+open_clip_torch
 huggingface-hub
 spacy
+numpy==1.26.4
