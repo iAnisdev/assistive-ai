@@ -12,3 +12,4 @@ open_clip_torch
 huggingface-hub
 spacy
 numpy==1.26.4
+scikit-learn
